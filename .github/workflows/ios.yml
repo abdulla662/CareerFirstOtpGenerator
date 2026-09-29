@@ -20,17 +20,16 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '9.0.x'
+        dotnet-version: '8.0.x'
         
     - name: Install MAUI workloads
-      run: |
-        dotnet workload install maui-ios maui-android maui-maccatalyst --version 9.0.21
+      run: dotnet workload install maui-ios maui-android
       
     - name: Build iOS
-      run: dotnet build CareerFirstOtpGenerator/CareerFirstOtpGenerator.csproj -f net9.0-ios -c Release -p:RuntimeIdentifier=ios-arm64 -p:ArchiveOnBuild=false -p:EnableCodeSigning=false -p:MtouchExtraArgs="--no-sign"
+      run: dotnet build CareerFirstOtpGenerator/CareerFirstOtpGenerator.csproj -f net8.0-ios -c Release -p:RuntimeIdentifier=ios-arm64 -p:ArchiveOnBuild=false -p:EnableCodeSigning=false
           
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: ios-build
-        path: '**/bin/Release/net9.0-ios/**/*.app'
+        path: '**/bin/Release/net8.0-ios/**/*.app'
