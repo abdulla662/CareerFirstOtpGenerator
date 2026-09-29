@@ -18,7 +18,7 @@ jobs:
         dotnet-version: '10.0.x'
         
     - name: Install MAUI workloads
-      run: dotnet workload install maui-ios maui-android
+      run: dotnet workload install maui-ios maui-android maui-maccatalyst
       
     - name: Build iOS
       run: |
