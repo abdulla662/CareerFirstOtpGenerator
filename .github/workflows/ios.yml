@@ -23,10 +23,11 @@ jobs:
         dotnet-version: '9.0.x'
         
     - name: Install MAUI workloads
-      run: dotnet workload install maui-ios maui-android maui-maccatalyst
+      run: |
+        dotnet workload install maui-ios maui-android maui-maccatalyst --version 9.0.21
       
     - name: Build iOS
-      run: dotnet build CareerFirstOtpGenerator/CareerFirstOtpGenerator.csproj -f net9.0-ios -c Release -p:RuntimeIdentifier=ios-arm64 -p:ArchiveOnBuild=false -p:EnableCodeSigning=false
+      run: dotnet build CareerFirstOtpGenerator/CareerFirstOtpGenerator.csproj -f net9.0-ios -c Release -p:RuntimeIdentifier=ios-arm64 -p:ArchiveOnBuild=false -p:EnableCodeSigning=false -p:MtouchExtraArgs="--no-sign"
           
     - name: Upload artifact
       uses: actions/upload-artifact@v4
