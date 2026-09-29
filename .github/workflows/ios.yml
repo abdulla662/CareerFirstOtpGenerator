@@ -17,16 +17,23 @@ jobs:
       with:
         xcode-version: '16.2'
     
-    - name: Setup .NET
+    - name: Setup .NET 8
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '8.0.x'
+
+    - name: Remove global.json if exists
+      run: rm -f global.json
         
     - name: Install MAUI workloads
       run: dotnet workload install maui-ios
+      env:
+        DOTNET_ROOT: /Users/runner/.dotnet
       
     - name: Build iOS
-      run: dotnet build CareerFirstOtpGenerator/CareerFirstOtpGenerator.csproj -f net8.0-ios -c Release -p:RuntimeIdentifier=ios-arm64 -p:ArchiveOnBuild=false -p:EnableCodeSigning=false --no-restore
+      run: dotnet build CareerFirstOtpGenerator/CareerFirstOtpGenerator.csproj -f net8.0-ios -c Release -p:RuntimeIdentifier=ios-arm64 -p:ArchiveOnBuild=false -p:EnableCodeSigning=false
+      env:
+        DOTNET_ROOT: /Users/runner/.dotnet
           
     - name: Upload artifact
       uses: actions/upload-artifact@v4
