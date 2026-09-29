@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CareerFirstOtpGenerator.MainPage"
+             x:Name="PageRoot"
+             BackgroundColor="#060818">
+
+    <ScrollView>
+        <Grid RowDefinitions="Auto,Auto,*" MinimumHeightRequest="700">
+
+            <!-- Top Bar -->
+            <HorizontalStackLayout Grid.Row="0"
+                                   HorizontalOptions="End"
+                                   Padding="16,48,16,0"
+                                   Spacing="8">
+
+                <!-- Language toggle -->
+                <Border StrokeShape="RoundRectangle 20"
+                        BackgroundColor="#1A2A6C"
+                        Stroke="#4F8EF7"
+                        StrokeThickness="1"
+                        Padding="12,6">
+                    <Label x:Name="LangBtn"
+                           Text="AR | EN"
+                           FontSize="12"
+                           FontAttributes="Bold"
+                           TextColor="#4F8EF7">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnLanguageToggle" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Border>
+
+                <!-- Theme toggle -->
+                <Border StrokeShape="RoundRectangle 20"
+                        BackgroundColor="#1A2A6C"
+                        Stroke="#4F8EF7"
+                        StrokeThickness="1"
+                        Padding="12,6">
+                    <Label x:Name="ThemeBtn"
+                           Text="🌙"
+                           FontSize="14">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnThemeToggle"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Border>
+
+            </HorizontalStackLayout>
+
+            <!-- Content -->
+            <VerticalStackLayout Grid.Row="1"
+                                 Spacing="0"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center"
+                                 Padding="24,0">
+
+                <!-- Animated Logo -->
+                <Grid HorizontalOptions="Center" Margin="0,20,0,32">
+                    <Ellipse x:Name="OuterRing"
+                             Fill="Transparent"
+                             Stroke="#1A2A6C"
+                             StrokeThickness="2"
+                             WidthRequest="140"
+                             HeightRequest="140"
+                             HorizontalOptions="Center"/>
+                    <Ellipse Fill="Transparent"
+                             Stroke="#4F8EF7"
+                             StrokeThickness="1"
+                             WidthRequest="120"
+                             HeightRequest="120"
+                             HorizontalOptions="Center"
+                             VerticalOptions="Center"
+                             Opacity="0.5"/>
+                    <Ellipse x:Name="InnerCircle"
+                             Fill="#0D1535"
+                             WidthRequest="100"
+                             HeightRequest="100"
+                             HorizontalOptions="Center"
+                             VerticalOptions="Center"/>
+                    <Label Text="🔐"
+                           FontSize="44"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"/>
+                </Grid>
+
+                <!-- App Name -->
+                <Label x:Name="AppNameLabel"
+                       Text="كاريير فيرست"
+                       FontSize="32"
+                       FontAttributes="Bold"
+                       TextColor="#FFFFFF"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"/>
+
+                <Label x:Name="AppSubtitleLabel"
+                       Text="مولد رمز التحقق"
+                       FontSize="14"
+                       FontAttributes="Bold"
+                       TextColor="#4F8EF7"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"
+                       CharacterSpacing="2"
+                       Margin="0,4,0,40"/>
+
+                <!-- Main Card -->
+                <Border x:Name="MainCard"
+                        StrokeShape="RoundRectangle 28"
+                        Stroke="#1A2A6C"
+                        StrokeThickness="1"
+                        Padding="0"
+                        HorizontalOptions="Fill"
+                        MinimumWidthRequest="320">
+
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+
+                        <BoxView Grid.Row="0"
+                                 HeightRequest="4"
+                                 Color="#4F8EF7"
+                                 HorizontalOptions="FillAndExpand"/>
+
+                        <VerticalStackLayout Grid.Row="1"
+                                             x:Name="CardSection1"
+                                             BackgroundColor="#0D1535"
+                                             Padding="28,28,28,0"
+                                             Spacing="0">
+
+                            <Label x:Name="SecureCodeLabel"
+                                   Text="رمز الوصول الآمن"
+                                   FontSize="12"
+                                   FontAttributes="Bold"
+                                   TextColor="#4F8EF7"
+                                   CharacterSpacing="2"
+                                   HorizontalOptions="Center"
+                                   HorizontalTextAlignment="Center"
+                                   Margin="0,0,0,16"/>
+
+                            <Border StrokeShape="RoundRectangle 16"
+                                    x:Name="CodeBorder"
+                                    BackgroundColor="#060818"
+                                    Stroke="#1A2A6C"
+                                    StrokeThickness="1"
+                                    Padding="20,16"
+                                    HorizontalOptions="Fill">
+                                <Label x:Name="OtpLabel"
+                                       Text="000 000"
+                                       FontSize="42"
+                                       FontAttributes="Bold"
+                                       TextColor="#4F8EF7"
+                                       HorizontalOptions="Center"
+                                       HorizontalTextAlignment="Center"
+                                       CharacterSpacing="3"
+                                       LineBreakMode="NoWrap"/>
+                            </Border>
+
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Grid.Row="2"
+                                             x:Name="CardSection2"
+                                             BackgroundColor="#0D1535"
+                                             Padding="28,20,28,0"
+                                             Spacing="10">
+
+                            <ProgressBar x:Name="TimerProgress"
+                                         Progress="1"
+                                         ProgressColor="#4F8EF7"
+                                         BackgroundColor="#1A2A6C"
+                                         HeightRequest="8"/>
+
+                            <HorizontalStackLayout HorizontalOptions="Center" Spacing="6">
+                                <Label x:Name="RefreshesInLabel"
+                                       Text="ينتهي خلال"
+                                       FontSize="13"
+                                       TextColor="#6B7DB3"/>
+                                <Label x:Name="CountdownLabel"
+                                       Text="30"
+                                       FontSize="13"
+                                       FontAttributes="Bold"
+                                       TextColor="#4F8EF7"/>
+                                <Label x:Name="SecondsLabel"
+                                       Text="ثانية"
+                                       FontSize="13"
+                                       TextColor="#6B7DB3"/>
+                            </HorizontalStackLayout>
+
+                        </VerticalStackLayout>
+
+                        <BoxView Grid.Row="3"
+                                 HeightRequest="1"
+                                 Color="#1A2A6C"
+                                 Margin="28,20,28,0"
+                                 BackgroundColor="#0D1535"/>
+
+                        <VerticalStackLayout Grid.Row="4"
+                                             x:Name="CardSection3"
+                                             BackgroundColor="#0D1535"
+                                             Padding="28,20,28,28"
+                                             Spacing="12">
+
+                            <Button x:Name="CopyBtn"
+                                    Text="نسخ الرمز"
+                                    Clicked="CopyBtn_Clicked"
+                                    BackgroundColor="#4F8EF7"
+                                    TextColor="White"
+                                    FontAttributes="Bold"
+                                    FontSize="16"
+                                    CornerRadius="14"
+                                    HeightRequest="54"/>
+
+                            <Label x:Name="CopiedLabel"
+                                   Text="✓ تم النسخ إلى الحافظة!"
+                                   FontSize="13"
+                                   TextColor="#4CAF50"
+                                   HorizontalOptions="Center"
+                                   HorizontalTextAlignment="Center"
+                                   IsVisible="False"/>
+
+                        </VerticalStackLayout>
+
+                    </Grid>
+                </Border>
+
+                <!-- Footer -->
+                <HorizontalStackLayout HorizontalOptions="Center"
+                                       Margin="0,28,0,40"
+                                       Spacing="6">
+                    <Label Text="🔒" FontSize="12"/>
+                    <Label x:Name="FooterLabel"
+                           Text="مشفر بالكامل · لا يُشارك أبداً"
+                           FontSize="12"
+                           TextColor="#2D3875"/>
+                </HorizontalStackLayout>
+
+            </VerticalStackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>

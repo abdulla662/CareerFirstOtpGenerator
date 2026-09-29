@@ -1,0 +1,36 @@
+name: Build iOS
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-ios:
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '10.0.x'
+        
+    - name: Install MAUI workload
+      run: dotnet workload install maui-ios
+      
+    - name: Build iOS
+      run: |
+        dotnet publish CareerFirstOtpGenerator/CareerFirstOtpGenerator.csproj \
+          -f net10.0-ios \
+          -c Release \
+          -p:RuntimeIdentifier=ios-arm64 \
+          -p:CodesignKey="" \
+          -p:CodesignProvision=""
+          
+    - name: Upload IPA
+      uses: actions/upload-artifact@v3
+      with:
+        name: ios-app
+        path: '**/*.ipa'
