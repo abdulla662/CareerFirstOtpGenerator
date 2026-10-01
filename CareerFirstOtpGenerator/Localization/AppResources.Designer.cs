@@ -97,11 +97,47 @@ namespace CareerFirstOtpGenerator.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expires in.
+        /// </summary>
+        internal static string ExpiresIn {
+            get {
+                return ResourceManager.GetString("ExpiresIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to End-to-end encrypted · Never shared.
         /// </summary>
         internal static string Footer {
             get {
                 return ResourceManager.GetString("Footer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The code is private and secure..
+        /// </summary>
+        internal static string Footnote {
+            get {
+                return ResourceManager.GetString("Footnote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EN.
+        /// </summary>
+        internal static string LangCode {
+            get {
+                return ResourceManager.GetString("LangCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to One-time password.
+        /// </summary>
+        internal static string OtpPassword {
+            get {
+                return ResourceManager.GetString("OtpPassword", resourceCulture);
             }
         }
         
@@ -129,6 +165,33 @@ namespace CareerFirstOtpGenerator.Localization {
         internal static string SecureCode {
             get {
                 return ResourceManager.GetString("SecureCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SECURE VERIFICATION.
+        /// </summary>
+        internal static string SecureVerification {
+            get {
+                return ResourceManager.GetString("SecureVerification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use this code to complete your sign in. Never share it with anyone..
+        /// </summary>
+        internal static string Subtitle {
+            get {
+                return ResourceManager.GetString("Subtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your one-time code.
+        /// </summary>
+        internal static string Title {
+            get {
+                return ResourceManager.GetString("Title", resourceCulture);
             }
         }
     }

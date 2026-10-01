@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using System.Globalization;
 
 namespace CareerFirstOtpGenerator
 {
@@ -7,18 +6,14 @@ namespace CareerFirstOtpGenerator
     {
         public static MauiApp CreateMauiApp()
         {
-            // Set Arabic
-            var culture = new CultureInfo("ar");
-            CultureInfo.CurrentCulture = culture;
-            CultureInfo.CurrentUICulture = culture;
-
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
                 {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFont("Cairo-Regular.ttf", "CairoRegular");
+                    fonts.AddFont("Cairo-Bold.ttf", "CairoBold");
+                    fonts.AddFont("Cairo-SemiBold.ttf", "CairoSemiBold");
                 });
 
 #if DEBUG

@@ -124,21 +124,42 @@
     <value>مولد رمز التحقق</value>
   </data>
   <data name="Copied" xml:space="preserve">
-    <value>رمز الوصول الآمن</value>
+    <value> تم النسخ</value>
   </data>
   <data name="CopyCode" xml:space="preserve">
-    <value>ينتهي خلال</value>
-  </data>
-  <data name="Footer" xml:space="preserve">
-    <value>ثانية</value>
-  </data>
-  <data name="RefreshesIn" xml:space="preserve">
     <value>نسخ الرمز</value>
   </data>
+  <data name="ExpiresIn" xml:space="preserve">
+    <value>تنتهي الصلاحية خلال</value>
+  </data>
+  <data name="Footer" xml:space="preserve">
+    <value>مشفر بالكامل · لا يُشارك أبداً</value>
+  </data>
+  <data name="Footnote" xml:space="preserve">
+    <value>لا يمكن لأي شخص آخر رؤية هذا الرمز.</value>
+  </data>
+  <data name="LangCode" xml:space="preserve">
+    <value>ع</value>
+  </data>
+  <data name="OtpPassword" xml:space="preserve">
+    <value>رمز المرور لمرة واحدة</value>
+  </data>
+  <data name="RefreshesIn" xml:space="preserve">
+    <value>ينتهي خلال</value>
+  </data>
   <data name="Seconds" xml:space="preserve">
-    <value>تم النسخ إلى الحافظة</value>
+    <value>ثانية</value>
   </data>
   <data name="SecureCode" xml:space="preserve">
-    <value>مشفر بالكامل · لا يُشارك أبداً</value>
+    <value>رمز الوصول الآمن</value>
+  </data>
+  <data name="SecureVerification" xml:space="preserve">
+    <value>التحقق الآمن</value>
+  </data>
+  <data name="Subtitle" xml:space="preserve">
+    <value>استخدم هذا الرمز لإتمام تسجيل الدخول. لا تشاركه مع أي شخص.</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>رمز التحقق الخاص بك</value>
   </data>
 </root>

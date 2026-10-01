@@ -1,38 +1,34 @@
-﻿namespace CareerFirstOtpGenerator;
+﻿using CareerFirstOtpGenerator.Localization;
+
+namespace CareerFirstOtpGenerator;
 
 public partial class MainPage : ContentPage
 {
-    private System.Timers.Timer _timer;
-    private bool _isAnimatingRing = false;
+    private System.Timers.Timer? _timer;
     private bool _isDarkMode = true;
     private bool _isArabic = true;
 
-    private static readonly Color DarkBg = Color.FromArgb("#060818");
-    private static readonly Color DarkCard = Color.FromArgb("#0D1535");
-    private static readonly Color DarkCodeBg = Color.FromArgb("#060818");
-    private static readonly Color LightBg = Color.FromArgb("#F0F4FF");
-    private static readonly Color LightCard = Color.FromArgb("#FFFFFF");
-    private static readonly Color LightCodeBg = Color.FromArgb("#E8EEFF");
+    private static readonly Color DarkBg = Color.FromArgb("#040918");
+    private static readonly Color LightBg = Color.FromArgb("#FBFAFC");
+    private static readonly Color DarkSurface = Color.FromArgb("#090F20");
+    private static readonly Color LightSurface = Color.FromArgb("#FFFFFF");
+    private static readonly Color DarkBorder = Color.FromArgb("#0E122B");
+    private static readonly Color LightBorder = Color.FromArgb("#ABABAB");
 
     public MainPage()
     {
         InitializeComponent();
     }
 
-    protected override async void OnAppearing()
+    protected override void OnAppearing()
     {
         base.OnAppearing();
-
-        OtpLabel.Opacity = 0;
-        OtpLabel.TranslationY = 20;
-
-        await Task.Delay(200);
-        await OtpLabel.FadeToAsync(1, 600);
-        await OtpLabel.TranslateToAsync(0, 0, 400, Easing.CubicOut);
-
-        UpdateCode();
+        _isDarkMode = true;
+        _isArabic = true;
+        ApplyTheme();
+        ApplyLanguage();
         StartTimer();
-        StartRingAnimation();
+        UpdateCode();
     }
 
     protected override void OnDisappearing()
@@ -40,17 +36,6 @@ public partial class MainPage : ContentPage
         base.OnDisappearing();
         _timer?.Stop();
         _timer?.Dispose();
-        _isAnimatingRing = false;
-    }
-
-    private async void StartRingAnimation()
-    {
-        _isAnimatingRing = true;
-        while (_isAnimatingRing)
-        {
-            await OuterRing.ScaleToAsync(1.08, 1000, Easing.SinInOut);
-            await OuterRing.ScaleToAsync(1.0, 1000, Easing.SinInOut);
-        }
     }
 
     private void StartTimer()
@@ -63,64 +48,59 @@ public partial class MainPage : ContentPage
         _timer.Start();
     }
 
-    private async void UpdateCode()
+    private void UpdateCode()
     {
         var code = TotpService.GetCurrentCode();
         var remaining = TotpService.GetRemainingSeconds();
 
-        if (remaining == 29)
-        {
-            await OtpLabel.FadeToAsync(0, 150);
-            OtpLabel.Text = $"{code[..3]} {code[3..]}";
-            await OtpLabel.FadeToAsync(1, 300);
-        }
-        else
-        {
-            OtpLabel.Text = $"{code[..3]} {code[3..]}";
-        }
+        Digit1.Text = code[0].ToString();
+        Digit2.Text = code[1].ToString();
+        Digit3.Text = code[2].ToString();
+        Digit4.Text = code[3].ToString();
+        Digit5.Text = code[4].ToString();
+        Digit6.Text = code[5].ToString();
 
-        CountdownLabel.Text = remaining.ToString();
+        CountdownLabel.Text = $"{remaining:00}";
         TimerProgress.Progress = remaining / 30.0;
 
-        if (remaining <= 5)
-        {
-            OtpLabel.TextColor = Color.FromArgb("#FF5252");
-            TimerProgress.ProgressColor = Color.FromArgb("#FF5252");
-            CountdownLabel.TextColor = Color.FromArgb("#FF5252");
-            CopyBtn.BackgroundColor = Color.FromArgb("#FF5252");
-            await OtpLabel.ScaleToAsync(1.05, 200);
-            await OtpLabel.ScaleToAsync(1.0, 200);
-        }
-        else
-        {
-            OtpLabel.TextColor = Color.FromArgb("#4F8EF7");
-            TimerProgress.ProgressColor = Color.FromArgb("#4F8EF7");
-            CountdownLabel.TextColor = Color.FromArgb("#4F8EF7");
-            CopyBtn.BackgroundColor = Color.FromArgb("#4F8EF7");
-        }
-    }
+        var expiring = remaining <= 5;
+        var accentColor = expiring ? Color.FromArgb("#FF5252") : Color.FromArgb("#0B7A75");
 
-    private async void CopyBtn_Clicked(object sender, EventArgs e)
+        TimerProgress.ProgressColor = accentColor;
+        CountdownLabel.TextColor = accentColor;
+
+        var boxBorder = expiring
+            ? Color.FromArgb("#FF5252")
+            : (_isDarkMode ? DarkBorder : LightBorder);
+
+        foreach (var box in new[] { Box1, Box2, Box3, Box4, Box5, Box6 })
+            box.Stroke = new SolidColorBrush(boxBorder);
+    }
+    private async void GenerateBtn_Clicked(object sender, EventArgs e)
     {
+        GenerateBtn.IsEnabled = false;
+        var culture = _isArabic
+            ? new System.Globalization.CultureInfo("ar")
+            : new System.Globalization.CultureInfo("en");
+
         var code = TotpService.GetCurrentCode();
         await Clipboard.SetTextAsync(code);
 
-        await CopyBtn.ScaleToAsync(0.95, 100);
-        await CopyBtn.ScaleToAsync(1.0, 100);
+        await GenerateBtn.ScaleToAsync(0.97, 80);
+        await GenerateBtn.ScaleToAsync(1.0, 80);
 
-        CopyBtn.Text = _isArabic ? "✓ تم النسخ!" : "✓ Copied!";
-        CopiedLabel.IsVisible = true;
+        GenerateBtn.Text = AppResources.ResourceManager.GetString("Copied", culture);
 
-        await Task.Delay(2000);
+        await Task.Delay(1500);
 
-        CopyBtn.Text = _isArabic ? "نسخ الرمز" : "Copy Code";
-        CopiedLabel.IsVisible = false;
+        GenerateBtn.Text = AppResources.ResourceManager.GetString("CopyCode", culture);
+        GenerateBtn.IsEnabled = true;
     }
-
     private void OnThemeToggle(object? sender, TappedEventArgs e)
     {
         _isDarkMode = !_isDarkMode;
         ApplyTheme();
+        UpdateCode();
     }
 
     private void ApplyTheme()
@@ -128,24 +108,40 @@ public partial class MainPage : ContentPage
         if (_isDarkMode)
         {
             BackgroundColor = DarkBg;
-            InnerCircle.Fill = new SolidColorBrush(DarkCard);
-            CardSection1.BackgroundColor = DarkCard;
-            CardSection2.BackgroundColor = DarkCard;
-            CardSection3.BackgroundColor = DarkCard;
-            CodeBorder.BackgroundColor = DarkCodeBg;
-            AppNameLabel.TextColor = Colors.White;
             ThemeBtn.Text = "🌙";
+            foreach (var box in new[] { Box1, Box2, Box3, Box4, Box5, Box6 })
+            {
+                box.BackgroundColor = DarkSurface;
+                box.Stroke = new SolidColorBrush(DarkBorder);
+            }
+            foreach (var d in new[] { Digit1, Digit2, Digit3, Digit4, Digit5, Digit6 })
+                d.TextColor = Colors.White;
+            TitleLabel.TextColor = Colors.White;
+            SecureVerificationLabel.TextColor = Color.FromArgb("#0B7A75");
+            SubtitleLabel.TextColor = Color.FromArgb("#9E9CA1");
+            ExpiresLabel.TextColor = Color.FromArgb("#9E9CA1");
+            OtpPasswordLabel.TextColor = Color.FromArgb("#9E9CA1");
+            FootnoteLabel.TextColor = Color.FromArgb("#2A2E3E");
+            TimerProgress.BackgroundColor = Color.FromArgb("#12182A");
         }
         else
         {
             BackgroundColor = LightBg;
-            InnerCircle.Fill = new SolidColorBrush(LightCard);
-            CardSection1.BackgroundColor = LightCard;
-            CardSection2.BackgroundColor = LightCard;
-            CardSection3.BackgroundColor = LightCard;
-            CodeBorder.BackgroundColor = LightCodeBg;
-            AppNameLabel.TextColor = Color.FromArgb("#0A0E27");
             ThemeBtn.Text = "☀️";
+            foreach (var box in new[] { Box1, Box2, Box3, Box4, Box5, Box6 })
+            {
+                box.BackgroundColor = LightSurface;
+                box.Stroke = new SolidColorBrush(LightBorder);
+            }
+            foreach (var d in new[] { Digit1, Digit2, Digit3, Digit4, Digit5, Digit6 })
+                d.TextColor = Colors.Black;
+            TitleLabel.TextColor = Colors.Black;
+            SecureVerificationLabel.TextColor = Color.FromArgb("#0B7A75");
+            SubtitleLabel.TextColor = Color.FromArgb("#3A3A3A");
+            ExpiresLabel.TextColor = Color.FromArgb("#3A3A3A");
+            OtpPasswordLabel.TextColor = Color.FromArgb("#3A3A3A");
+            FootnoteLabel.TextColor = Color.FromArgb("#8C93A1");
+            TimerProgress.BackgroundColor = Color.FromArgb("#F1EDFB");
         }
     }
 
@@ -157,29 +153,19 @@ public partial class MainPage : ContentPage
 
     private void ApplyLanguage()
     {
-        if (_isArabic)
-        {
-            LangBtn.Text = "AR | EN";
-            AppNameLabel.Text = "كاريير فيرست";
-            AppSubtitleLabel.Text = "مولد رمز التحقق";
-            SecureCodeLabel.Text = "رمز الوصول الآمن";
-            RefreshesInLabel.Text = "ينتهي خلال";
-            SecondsLabel.Text = "ثانية";
-            CopyBtn.Text = "نسخ الرمز";
-            CopiedLabel.Text = "✓ تم النسخ إلى الحافظة!";
-            FooterLabel.Text = "مشفر بالكامل · لا يُشارك أبداً";
-        }
-        else
-        {
-            LangBtn.Text = "EN | AR";
-            AppNameLabel.Text = "CareerFirst";
-            AppSubtitleLabel.Text = "OTP GENERATOR";
-            SecureCodeLabel.Text = "SECURE ACCESS CODE";
-            RefreshesInLabel.Text = "Refreshes in";
-            SecondsLabel.Text = "seconds";
-            CopyBtn.Text = "Copy Code";
-            CopiedLabel.Text = "✓ Code copied to clipboard!";
-            FooterLabel.Text = "End-to-end encrypted · Never shared";
-        }
+        var culture = _isArabic
+            ? new System.Globalization.CultureInfo("ar")
+            : new System.Globalization.CultureInfo("en");
+
+        System.Globalization.CultureInfo.CurrentUICulture = culture;
+
+        SecureVerificationLabel.Text = AppResources.SecureVerification;
+        TitleLabel.Text = AppResources.Title;
+        SubtitleLabel.Text = AppResources.Subtitle;
+        OtpPasswordLabel.Text = AppResources.OtpPassword;
+        ExpiresLabel.Text = AppResources.ExpiresIn;
+        GenerateBtn.Text = AppResources.CopyCode;
+        FootnoteLabel.Text = AppResources.Footnote;
+        LangBtn.Text = AppResources.LangCode;
     }
 }

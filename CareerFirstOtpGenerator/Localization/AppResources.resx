@@ -129,8 +129,20 @@
   <data name="CopyCode" xml:space="preserve">
     <value>Copy Code</value>
   </data>
+  <data name="ExpiresIn" xml:space="preserve">
+    <value>Expires in</value>
+  </data>
   <data name="Footer" xml:space="preserve">
     <value>End-to-end encrypted · Never shared</value>
+  </data>
+  <data name="Footnote" xml:space="preserve">
+    <value>The code is private and secure.</value>
+  </data>
+  <data name="LangCode" xml:space="preserve">
+    <value>EN</value>
+  </data>
+  <data name="OtpPassword" xml:space="preserve">
+    <value>One-time password</value>
   </data>
   <data name="RefreshesIn" xml:space="preserve">
     <value>Refreshes in</value>
@@ -140,5 +152,14 @@
   </data>
   <data name="SecureCode" xml:space="preserve">
     <value>SECURE ACCESS CODE</value>
+  </data>
+  <data name="SecureVerification" xml:space="preserve">
+    <value>SECURE VERIFICATION</value>
+  </data>
+  <data name="Subtitle" xml:space="preserve">
+    <value>Use this code to complete your sign in. Never share it with anyone.</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Your one-time code</value>
   </data>
 </root>
